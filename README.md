@@ -114,7 +114,7 @@ Les commandes disponibles sont appelées tâches
 
 L'execution de chaque tâche est décrite dans un module python du package `jeanpaulstart.tasks`
 
-Ces modules sont listés au demarrage de Jean-Paul Start, s'ils répondent aux exigences du plugin-loader, deviennent disponible lors de l'execution des batches
+Ces modules sont listés au démarrage de Jean-Paul Start, s'ils répondent aux exigences du plugin-loader, deviennent disponible lors de l'execution des batches
 
 ### Copy
 
@@ -217,7 +217,7 @@ Copie un fichier template au format [Jinja2](http://jinja.pocoo.org/docs/2.10/),
 
 ### Url
 
-Ouvre l'url donnée dans le navigateur par défaut
+Ouvre l'url donnée, dans le navigateur par défaut
 
 ````yaml
 - name: Task Name
