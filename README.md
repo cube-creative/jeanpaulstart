@@ -6,6 +6,8 @@ _L'enfer, c'est les .bats_
 
 - Fenêtre affichant les icônes correspondant aux batches
 
+- Utilisé sous Windows, normalement compatible Linux
+
 ## Installation
 
 ````bash
@@ -92,7 +94,9 @@ tasks:
 python -m jeanpaulstart --filepath /path/to/a/batch.yml
 ````
 
-- Il est possible d'executer un batch au format JSON sérialisé (peu commun). L'utilisation du flag `--not-normalized` est conseillée
+- Il est possible d'executer un batch au format JSON sérialisé (peu commun)
+
+_L'utilisation du flag `--not-normalized` est conseillée_
 
 ````bash
 python -m jeanpaulstart --not-normalized --json {"name": "3DS Max", ... }
@@ -100,9 +104,9 @@ python -m jeanpaulstart --not-normalized --json {"name": "3DS Max", ... }
 
 ## Interface Graphique
 
-Il existe une version PySide de Jean-Paul Start.
+Il existe une version PySide de Jean-Paul Start
 
-Elle se base sur les dossiers contenant des batches, et un fichier de configuration associant les noms d'utilisateurs (obtenus avec `getpass.getuser()`) et les tags présents dans les batches.
+Elle se base sur les dossiers contenant des batches, et un fichier de configuration associant les noms d'utilisateurs (obtenus avec `getpass.getuser()`) aux tags présents dans les batches
 
 ### Lancement
 
@@ -114,4 +118,24 @@ python -m jeanpaulstartui --batches /path/to/a/batch/folder;/path/to/another/fol
 
 ### User Tags
 
-Le fichier 
+Le fichier user tags représente au format YAML l'association de nom d'utilisateurs à des tags
+
+Exemple
+
+````yaml
+---
+production:
+  - jp.sartre
+  - p.deproges
+
+graphist_base:
+  - y.montand
+  - j.hallyday
+
+rigging:
+  - s.weaver
+  - j.rochefort
+...
+````
+
+Ainsi, les batches portant les tags 'production' apparaitront pour l'utilisateur `jp.sartre`
