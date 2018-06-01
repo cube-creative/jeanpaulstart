@@ -1,10 +1,14 @@
 # Jean Paul Start
 
+![](jeanpaulstartui.jpg)
+
 _L'enfer, c'est les .bats_
 
 - Execution de batches avec une syntaxe proche de celle d'[Ansible](http://docs.ansible.com/ansible/latest/user_guide/playbooks.html)
 
 - Fenêtre affichant les icônes correspondant aux batches
+
+- Extensibilité par plugins
 
 - Utilisé sous Windows, normalement compatible Linux
 
@@ -152,6 +156,12 @@ everyone:
 ````
 
 ## Commandes disponibles
+
+Les commandes disponibles sont appelées tâches
+
+L'execution de chaque tâche est décrite dans un module python du package `jeanpaulstart.tasks`
+
+Ces modules sont listés au demarrage de Jean-Paul Start, s'ils répondent aux exigences du plugin-loader, deviennent disponible lors de l'execution des batches
 
 ### Copy
 
