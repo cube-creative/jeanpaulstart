@@ -37,7 +37,7 @@ environment:
 tasks:
   - name: Running application
     raw:
-      command: python -m jeanbauchefortui --config $ENVIRONMENT/_config/jean-bauchefort/config.yml
+      command: python -m jeanbauchefortui
 ...
 ````
 
