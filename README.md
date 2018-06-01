@@ -1,60 +1,87 @@
-[![pipeline status](http://192.0.9.185/cube/jean-paul-start/badges/master/pipeline.svg)](http://192.0.9.185/cube/jean-paul-start/commits/master) [![coverage report](http://192.0.9.185/cube/jean-paul-start/badges/master/coverage.svg)](http://192.0.9.185/cube/jean-paul-start/commits/master) 
-
 # Jean Paul Start
 
-L'enfer, c'est les .bats
+_L'enfer, c'est les .bats_
 
-## Utilisation en GUI
+- Execution de batches avec une syntaxe proche de celle d'Ansible
 
-Ouvir l'interface Jean Paul Start, en fournissant un dossier pour les batches à afficher, et un chemin pour le fichier
-de tags
+- Fenêtre affichant les icônes correspondant aux batches
 
-```bash
-python -m jeanpaulstartui --batches R:/deploy/cube/_config/jean-paul-start-config/batches --tags R:/deploy/cube/_config/jean-paul-start-config/use
-r_tags.yml
-```
+## Installation
 
-### Ouverture d'un batch en CLI
+````bash
+pip install git+https://github.com/cube-creative/jeanpaulstart.git
+````
 
-L'ouverture directe d'un batch `.yml` avec Jean Paul Start en CLI se fait en précisant le ficier avec l'argument `-f`
+## Configuration
 
-```bash
-python -m jeanpaulstart -f R:/deploy/cube/_config/jean-paul-start-config/batches/batch_a_lancer.yml
-```
+### Batches
 
-## Utilisation en CLI
+Un batch décrit un environnement à travers des variables, puis des actions à executer
 
-Il est possible d'utiliser Jean Paul Start en CLI, avec l'argument `--json` ou `-j`
+Exemple pour lancer 3Ds Max
 
-### Directement
+````yaml
+---
+name: 3Ds Max 2016
+icon_path: $ENVIRONMENT\_config\jean-paul-start\icons\max-2016.png
+tags: 
+  - DCC
+  - 3D
+  - Max
+environment:
+  CUBE_ENVIRONMENT: production
+  CUBE_MAX_SCRIPTS: $ENVIRONMENT\max-2016
+  MAX_VERSION: 2016
+  MAX_NAME: Max-$MAX_VERSION
+  MAX_DIRECTORY: C:\Program Files\Autodesk\3ds Max $MAX_VERSION
+  PYTHONPATH:
+    - $MAX_DIRECTORY\python\Lib
+    - $ENVIRONMENT\max-2016
+    - $ENVIRONMENT\max-2016\python
+  INI_TEMPLATE: $ENVIRONMENT\max-2016\config\3dsmax-ini-default-$MAX_VERSION.ini.j2
+  INI_SOURCE: $LOCALAPPDATA\Autodesk\3dsMax\$MAX_VERSION - 64bit\ENU\3dsmax.ini
+  INI_TARGET: $LOCALAPPDATA\Autodesk\3dsMax\$MAX_VERSION - 64bit\ENU\${MAX_NAME}_3dsmax.ini
+  PLUGIN_INI_SOURCE: $CUBE_MAX_SCRIPTS\config\Plugin.UserSettings.ini.j2
+  PLUGIN_INI_TARGET: $LOCALAPPDATA\Autodesk\3dsMax\$MAX_VERSION - 64bit\ENU\${MAX_NAME}_Plugin_UserSettings.ini
 
-```bash
-python -m jeanpaulstart --json "{\"name\": \"Some Name\", \"icon_path\": \"some/path\", \"tags\": [], \"tasks\": [{\"name\": \"A Task\", \"raw\": \"some command\"}]}"
-```
+tasks:
+  - name: Copy 3dsmax.ini template if missing
+    template:
+      src: $INI_TEMPLATE
+      dest: $INI_SOURCE
+      force: no
+      
+  - name: Create custom 3dsmax.ini if missing
+    copy:
+      src: $INI_SOURCE
+      dest: $INI_TARGET
+      force: no
+      
+  - name: Additional Icons
+    ini_file:
+      src: $INI_TARGET
+      state: present
+      section: Directories
+      option: Additional Icons
+      value: $ENVIRONMENT\max-2016\resources\icons
 
-### Avec les fonctions de dump fournies
+  - name: Startup Scripts
+    ini_file:
+      src: $INI_TARGET
+      state: present
+      section: Directories
+      option: Startup Scripts
+      value: $CUBE_MAX_SCRIPTS\maxscript\startupscripts
 
-Il existe des fonctions pour préparer un fichier ou des données batch pour la ligne de commande
+  - name: AutoBackup Enable
+    ini_file:
+      src: $INI_TARGET
+      state: present
+      section: AutoBackup
+      value: 1
 
-- Directement depuis un chemin vers un batch (au format JSON ou YAML)
-
-```python
-import jeanpaulstart
-
-dumped = jeanpaulstart.dump_file_for_command_line("some/filepath")
-command = 'python -m jeanpaulstart --json {json_dump}'.format(json_dump=dumped)
-```
-
-- Depuis des données brutes (en sortie de parser)
-
-```python
-import jeanpaulstart
-from jeanpaulstart import parser
-
-data = parser.from_yaml(YAML_CONTENT)
-dumped = jeanpaulstart.dump_data_for_command_line(data)
-command = 'python -m jeanpaulstart --json {json_dump}'.format(json_dump=dumped)
-```
-
-_Note : les fonctions de dump se chargent de valider et normaliser les données, il faut veiller à 
-**utiliser le contenu de batch coté utilisateur** (i.e avec le champ `environment`)_
+  - name: Launch 3DS Max 2016
+    raw: 
+      command: "\"$MAX_DIRECTORY\\3dsmax.exe\" -p ${MAX_NAME}_Plugin_UserSettings.ini %* -i ${MAX_NAME}_3dsmax.ini"
+...
+````
