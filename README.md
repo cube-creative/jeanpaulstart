@@ -139,3 +139,14 @@ rigging:
 ````
 
 Ainsi, les batches portant les tags 'production' apparaitront pour l'utilisateur `jp.sartre`
+
+- Il est possible de référencer un groupe dans un autre groupe en utilisant le caractère spécial `$`
+
+````yaml
+everyone:
+  - $production
+  - $graphist_base
+  - $rigging
+  - m.polnareff
+...
+````
