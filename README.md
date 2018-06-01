@@ -20,7 +20,7 @@ pip install git+https://github.com/cube-creative/jeanpaulstart.git
 
 ## Batches
 
-Un batch décrit au format YAML un environnement (à travers des variables), puis des actions à executer
+Un batch décrit au format YAML un environnement (à travers des variables), puis des actions à exécuter
 
 Exemple basique :
 
@@ -114,7 +114,7 @@ Les commandes disponibles sont appelées tâches
 
 L'execution de chaque tâche est décrite dans un module python du package `jeanpaulstart.tasks`
 
-Ces modules sont listés au démarrage de Jean-Paul Start, s'ils répondent aux exigences du plugin-loader, deviennent disponible lors de l'execution des batches
+Ces modules sont listés au démarrage de Jean-Paul Start, s'ils répondent aux exigences du plugin-loader, deviennent disponible lors de l'exécution des batches
 
 ### Copy
 
@@ -132,7 +132,7 @@ Si la destination existe, et `force: no`, aucune action n'est effectuée
 
 ### File
 
-Créé un fichier ou un dossier
+Crée un fichier ou un dossier
 
 ````yaml
 - name: Name of task
@@ -143,7 +143,7 @@ Créé un fichier ou un dossier
 
 ### Include Tasks
 
-Permet d'excuter un batch
+Permet d'exécuter un batch
 
 L'environnement courant est passé au batch appelé, les modifications faites à l'environnement par le batch appelé ne sont pas conservées dans les tâches suivantes
 
@@ -169,7 +169,7 @@ Permet de modifier un fichier .ini
 
 ### Pip
 
-Execute la commande `pip install`
+Exécute la commande `pip install`
 
 Le paramètre `state` est facultatif, il vaut `present` par défaut
 
@@ -188,9 +188,9 @@ Le paramètre `state` est facultatif, il vaut `present` par défaut
 
 ### Raw
 
-Execute une commande dans le terminal
+Exécute une commande dans le terminal
 
-Le paramètre `async` execute la commande dans un processus enfant, sans interrompre l'execution (`Popen()`) (facultatif)
+Le paramètre `async` exécute la commande dans un processus enfant, sans interrompre l'exécution (`Popen()`) (facultatif)
 Le paramètre `open_terminal` ouvre un nouveau terminal (facultatif)
 
 `async` vaut `True` par défaut, `open_terminal` vaut `False` par défaut
