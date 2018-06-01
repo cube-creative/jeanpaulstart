@@ -108,7 +108,7 @@ everyone:
 ...
 ````
 
-## Commandes disponibles
+## Commandes disponibles dans les YAML de batch
 
 Les commandes disponibles sont appelées tâches
 
