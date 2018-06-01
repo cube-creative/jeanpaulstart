@@ -1,0 +1,110 @@
+QWidget
+{
+    color: rgb(239, 240, 241);
+    background-color: rgb(49, 54, 59);
+    selection-background-color: rgb(61, 174, 233);
+    selection-color: rgb(239, 240, 241);
+    background-clip: border;
+    border-image: none;
+    border: 0px transparent black;
+    outline: 0;
+}
+
+QLabel
+{
+    background-color: transparent;
+}
+
+QLabel#status
+{
+    qproperty-alignment: AlignTop;
+}
+
+QLabel#window_title
+{
+    font-weight: bold
+}
+
+QToolTip
+{
+    color: rgb(239, 240, 241);
+    background-color: rgb(35, 38, 41);
+    border: none;
+    border-radius; none;
+}
+
+QPushButton
+{
+    color: rgb(239, 240, 241);
+    border-width: 2px;
+    border-style: solid;
+    padding: 4px;
+    border-radius: 4px;
+    outline: none;
+}
+
+QPushButton:pressed
+{
+    background-color: rgb(61, 174, 233);
+}
+
+QPushButton:hover, QPushButton:focus
+{
+    border-color: rgb(61, 174, 233);
+}
+
+QToolButton
+{
+    font-weight: bold;
+    border-radius: 0;
+}
+
+QToolButton#close_button
+{
+    background-color: rgb(244, 67, 54);
+}
+
+QToolButton#close_button:hover
+{
+    background-color: rgb(198, 40, 40);
+}
+
+QToolButton#minimize_button
+{
+    background-color: rgb(33, 150, 243);
+}
+
+QToolButton#minimize_button:hover
+{
+    background-color: rgb(21, 101, 192);
+}
+
+QScrollBar:vertical
+{
+    background-color: rgb(42, 41, 41);
+    width: 8px;
+    margin: 0px 0px 0px 0px;
+    border-radius: 4px;
+    border: none;
+
+}
+
+QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical
+{
+    border-radius: 4px;
+    background: none;
+}
+
+QScrollBar::handle:vertical
+{
+    background-color: rgb(61, 174, 233);
+    min-height: 8px;
+    border-radius: 4px;
+}
+
+QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
+    border: none;
+    background: none;
+    width: 0px;
+    height: 0px;
+}

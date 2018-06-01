@@ -1,0 +1,15 @@
+title: Jean-Paul Start
+modules:
+  - jeanpaulstart/__main__.py
+  - jeanpaulstartui/__main__.py
+  - jeanpaulstart/__init__.py
+  - jeanpaulstart/tasks/copy_.py
+  - jeanpaulstart/tasks/environment.py
+  - jeanpaulstart/tasks/file_.py
+  - jeanpaulstart/tasks/include_tasks.py
+  - jeanpaulstart/tasks/ini_file.py
+  - jeanpaulstart/tasks/pip.py
+  - jeanpaulstart/tasks/pip3.py
+  - jeanpaulstart/tasks/raw.py
+  - jeanpaulstart/tasks/template.py
+  - jeanpaulstart/tasks/url.py

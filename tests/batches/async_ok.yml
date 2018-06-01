@@ -1,0 +1,16 @@
+---
+name: Async OK
+icon_path: some/icon/path
+tags: []
+environment:
+  ENV_VAR1: value1
+  ENV_VAR2:
+    - valuea
+    - valueb
+
+tasks:
+  - name: Some Task
+    raw:
+      command: some command
+      async: false
+...
