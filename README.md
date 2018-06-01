@@ -12,13 +12,11 @@ _L'enfer, c'est les .bats_
 pip install git+https://github.com/cube-creative/jeanpaulstart.git
 ````
 
-## Configuration
+## Batches
 
-### Batches
+Un batch décrit au format YAML un environnement (à travers des variables), puis des actions à executer
 
-Un batch décrit un environnement à travers des variables, puis des actions à executer
-
-Exemple pour lancer 3Ds Max
+Exemple pour lancer 3Ds Max :
 
 ````yaml
 ---
@@ -85,3 +83,35 @@ tasks:
       command: "\"$MAX_DIRECTORY\\3dsmax.exe\" -p ${MAX_NAME}_Plugin_UserSettings.ini %* -i ${MAX_NAME}_3dsmax.ini"
 ...
 ````
+
+## Ligne de commande
+
+- Il est possible d'appeler un batch en ligne de commande 
+
+````bash
+python -m jeanpaulstart --filepath /path/to/a/batch.yml
+````
+
+- Il est possible d'executer un batch au format JSON sérialisé (peu commun). L'utilisation du flag `--not-normalized` est conseillée
+
+````bash
+python -m jeanpaulstart --not-normalized --json {"name": "3DS Max", ... }
+````
+
+## Interface Graphique
+
+Il existe une version PySide de Jean-Paul Start.
+
+Elle se base sur les dossiers contenant des batches, et un fichier de configuration associant les noms d'utilisateurs (obtenus avec `getpass.getuser()`) et les tags présents dans les batches.
+
+### Lancement
+
+Il suffit d'appeler le module `jeanpaulstartui`
+
+````bash
+python -m jeanpaulstartui --batches /path/to/a/batch/folder;/path/to/another/folder --tags /path/to/user-tags.yml
+````
+
+### User Tags
+
+Le fichier 
