@@ -1,14 +1,14 @@
 import os
-import constants
+import platform
 
 
-def get_env_variable(name):
+def get(name):
     return os.environ.get(name)
 
 
-def set_env_variable(name, value):
+def set(name, value):
     if type(value) == list:
-        if constants.OS_IS_WINDOWS:
+        if platform.system() == 'Windows':
             value = ';'.join(value)
         else:
             value = ':'.join(value)
@@ -16,23 +16,31 @@ def set_env_variable(name, value):
     os.environ[name] = os.path.expandvars(str(value))
 
 
-def parse_env_variable(value):
+def parse(value):
     if isinstance(value, bool):
         return value
 
-    if constants.OS_IS_WINDOWS:
+    if isinstance(value, dict):
+        return _parse_from_dict(value)
+
+    if platform.system() == 'Windows':
         return os.path.expandvars(str(value).replace('%', '%%'))
 
     return os.path.expandvars(str(value))
 
 
-def parse_env_variables_from_dict(dict_):
+def _parse_from_dict(dict_):
     parsed_dict = dict()
     for key, value in dict_.items():
+        key = parse(key)
+
         if isinstance(value, list):
-            parsed_dict[key] = [parse_env_variable(item) for item in value]
+            parsed_dict[key] = [parse(item) for item in value]
+
         elif isinstance(value, dict):
-            parsed_dict[key] = {key: parse_env_variable(item) for key, item in value.items()}
+            parsed_dict[key] = {key: parse(item) for key, item in value.items()}
+
         else:
-            parsed_dict[key] = parse_env_variable(value)
+            parsed_dict[key] = parse(value)
+
     return parsed_dict

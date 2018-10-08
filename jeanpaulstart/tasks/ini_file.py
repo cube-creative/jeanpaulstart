@@ -78,3 +78,5 @@ def apply_(src, section, dest=None, state=STATE_PRESENT, option=None, value=None
 
     with open(src, 'w+') as ini_file:
         ini_file.write(new_ini_content)
+
+    return OK

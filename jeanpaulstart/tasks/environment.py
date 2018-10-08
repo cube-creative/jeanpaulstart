@@ -14,4 +14,5 @@ def normalize_after_split(splitted):
 
 
 def apply_(name, value):
-    environment.set_env_variable(name, value)
+    environment.set(name, value)
+    return OK

@@ -1,2 +1,1 @@
-from jeanpaulstart.api import *
-from jeanpaulstart.constants import *
+from .api import *
