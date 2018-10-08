@@ -16,3 +16,4 @@ def normalize_after_split(splitted):
 
 def apply_(url):
     webbrowser.open(url)
+    return OK

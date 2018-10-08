@@ -62,16 +62,38 @@ def _str_hook(data, ignore_dicts=False):
 
 
 def from_yaml(yaml_content):
+    """
+    Parses a YAML string
+    :param yaml_content:
+    :return:
+    """
     data = yaml.load(yaml_content, _OrderedDictYAMLLoader)
     return data
 
 
 def from_json(json_content):
+    """
+    Parses a JSON string
+    :param json_content:
+    :return:
+    """
     data = _str_hook(
         json.loads(json_content, object_pairs_hook=_str_ordered_dict, object_hook=_str_hook),
         ignore_dicts=True
     )
     return data
+
+
+def parse(content):
+    """
+    Tries to parse as YAML, as JSON on failure
+    :param content:
+    :return:
+    """
+    try:
+        return from_yaml(content)
+    except yaml.YAMLError as e:
+        return from_json(content)
 
 
 def _from_json_file(filepath):
@@ -91,6 +113,14 @@ def _from_yaml_file(filepath):
 
 
 def from_file(filepath):
+    """
+    Parses from a filepath
+    Parser is choosen from extension (.json / .yml)
+    :param filepath:
+    :return: None if file not parsed or doesn't exist or not .json / .yml
+    """
+    filepath = filepath.replace('/', '\\')
+
     if not os.path.isfile(filepath):
         return None
 
@@ -102,6 +132,11 @@ def from_file(filepath):
 
 
 def from_folder(folder):
+    """
+    Parses all the files in the given folder
+    :param folder:
+    :return: a list of parsed data
+    """
     data = list()
 
     if not os.path.exists(folder):
@@ -117,6 +152,11 @@ def from_folder(folder):
 
 
 def from_folders(folders):
+    """
+    Parses all the files in all the given folders
+    :param folders:
+    :return: a list of parsed data
+    """
     data = list()
 
     for folder in folders:

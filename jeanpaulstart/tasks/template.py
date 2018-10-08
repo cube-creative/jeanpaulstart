@@ -29,7 +29,7 @@ def normalize_after_split(splitted):
 
 def apply_(src, dest, force):
     if not force and os.path.isfile(dest):
-        return
+        return STATE_ALREADY_EXISTS
 
     dirname = os.path.dirname(dest)
     if not os.path.isdir(dirname): os.makedirs(dirname)
@@ -40,3 +40,5 @@ def apply_(src, dest, force):
 
     with open(dest, "w+") as dest_file:
         dest_file.write(replaced_content)
+
+    return OK

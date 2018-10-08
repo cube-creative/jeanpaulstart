@@ -3,7 +3,7 @@ from subprocess import call
 from jeanpaulstart.constants import *
 
 
-TASK_COMMAND = 'pip'
+TASK_COMMAND = 'pip3'
 
 
 def validate(user_data):
@@ -17,7 +17,8 @@ def normalize_after_split(splitted):
 
 
 def apply_(name, state):
-    command = "pip install {state}{name}".format(
+
+    command = "pip3 install {state}{name}".format(
         state='--upgrade ' if state == STATE_FORCE_REINSTALL else '',
         name=name
     )

@@ -1,1 +1,1 @@
-from jeanpaulstart.batch.api import *
+from .batch import Batch

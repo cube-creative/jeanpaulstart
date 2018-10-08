@@ -7,18 +7,6 @@ import jeanpaulstart
 def process_args():
     parser = argparse.ArgumentParser(description="Jean-Paul Start - Cube's Launcher")
     parser.add_argument(
-        '-j',
-        '--json',
-        type=str,
-        help="JSON batch data"
-    )
-    parser.add_argument(
-        '-n',
-        '--not-normalized',
-        action='store_true',
-        help="Use if JSON data has not been normalized by jeanpaulstart"
-    )
-    parser.add_argument(
         '-f',
         '--filepath',
         type=str,
@@ -35,18 +23,22 @@ if __name__ == '__main__':
     args = process_args()
     jeanpaulstart.load_plugins()
 
-    status = jeanpaulstart.OK
+    if not args.filepath:
+        sys.exit()
 
-    if args.json:
-        status = jeanpaulstart.run_from_json(args.json, not args.not_normalized)
+    status = jeanpaulstart.run_from_filepath(args.filepath)
 
-    elif args.filepath:
-        status = jeanpaulstart.run_from_filepath(args.filepath)
+    if status == jeanpaulstart.BATCH_NO_DATA:
+        exit_code = 2  # No such file or directory
 
-    if status == jeanpaulstart.OK or status == jeanpaulstart.ERROR_IGNORED:
-        exit_code = 0
+    elif status in (jeanpaulstart.BATCH_NOT_NORMALIZED, jeanpaulstart.BATCH_NOT_VALID):
+        exit_code = 3
+
+    elif status in (jeanpaulstart.OK, jeanpaulstart.TASK_ERROR_IGNORED):
+        exit_code = 0  # Success
+
     else:
         exit_code = status
 
-    logging.info("Exit code is '{exit_code}'".format(exit_code=exit_code))
+    logging.info("Exit code is '{}'".format(exit_code))
     sys.exit(exit_code)

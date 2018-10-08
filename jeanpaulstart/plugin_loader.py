@@ -3,19 +3,13 @@ import imp
 import logging
 from glob import glob
 from collections import OrderedDict
-import constants
+from constants import *
 
 
 loaded_plugins = OrderedDict()
 
 
 class Loader(object):
-    OK = constants.OK
-    TASK_COMMAND_MISSING = "TASK_COMMAND_MISSING"
-    TASK_COMMAND_NOT_STR = "TASK_COMMAND_NOT_STR"
-    VALIDATE_MISSING = "VALIDATE_MISSING"
-    NORMALIZE_MISSING = "NORMALIZE_MISSING"
-    APPLY_MISSING = "APPLY_MISSING"
 
     def __init__(self, plugin_folder):
          self.plugin_folder = plugin_folder
@@ -29,10 +23,7 @@ class Loader(object):
         except ValueError:
             pass
 
-        logging.info("Listed {count:03d} plugins from : {plugin_folder}".format(
-            count=len(names),
-            plugin_folder=self.plugin_folder
-        ))
+        logging.info("Listed {count:03d} plugins".format(count=len(names)))
 
         return names
 
@@ -60,21 +51,21 @@ class Loader(object):
 
     def validate(self, plugin):
         if not hasattr(plugin, "TASK_COMMAND"):
-            return Loader.TASK_COMMAND_MISSING
+            return PLUG_COMMAND_MISSING
 
         if not isinstance(plugin.TASK_COMMAND, str):
-            return Loader.TASK_COMMAND_NOT_STR
+            return PLUG_COMMAND_NOT_STR
 
         if not hasattr(plugin, "validate"):
-            return Loader.VALIDATE_MISSING
+            return PLUG_VALIDATE_MISSING
 
         if not hasattr(plugin, "normalize_after_split"):
-            return Loader.NORMALIZE_MISSING
+            return PLUG_NORMALIZE_MISSING
 
         if not hasattr(plugin, "apply_"):
-            return Loader.APPLY_MISSING
+            return PLUG_APPLY_MISSING
 
-        return Loader.OK
+        return OK
 
     def load_all(self):
         plugins = OrderedDict()
@@ -84,7 +75,7 @@ class Loader(object):
             plugin = self.load(plugin_name=plugin_name)
             status = self.validate(plugin)
 
-            if status is not Loader.OK:
+            if status is not OK:
                 logging.warn("Could not validate plugin : '{plugin_name}.py' ({status})".format(
                     plugin_name=plugin_name,
                     status=status

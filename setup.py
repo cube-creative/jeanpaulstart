@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 
 
 NAME = 'jeanpaulstart'
-VERSION = '1.14.4'
+VERSION = '2.0.0'
 DESCRIPTION = 'Launcher'
 AUTHOR = 'Cube Creative'
 AUTHOR_EMAIL = 'development@cube-creative.com'
