@@ -1,4 +1,3 @@
-import logging
 from jeanpaulstart.constants import *
 from jeanpaulstart import plugin_loader
 

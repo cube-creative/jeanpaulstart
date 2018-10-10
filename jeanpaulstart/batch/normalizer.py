@@ -1,3 +1,4 @@
+import logging
 from task import Task
 from jeanpaulstart.constants import *
 from jeanpaulstart import plugin_loader
@@ -6,16 +7,42 @@ from jeanpaulstart import plugin_loader
 plugin_loader.init()
 
 
-def _ignore_errors(task_data):
-    return task_data.get('ignore_errors', False)
+def _catch_exception(task_data):
+    if 'ignore_errors' in task_data.keys():
+        logging.info(
+            "Task '{name}' : 'ignore_errors' has been renamed to 'catch_exception', "
+            "please update your batch".format(
+                name=task_data['name']
+        ))
+        return task_data['ignore_errors']
+
+    return task_data.get('catch_exception', False)
 
 
 def _register_status(task_data):
     return task_data.get('register_status', False)
 
 
-def _abort_on_failure(task_data):
-    return task_data.get('abort_on_failure', False)
+def _exit_if_not_ok(task_data):
+    if task_data.get('ignore_errors', False) or task_data.get('catch_exception', False):
+        logging.info("Task '{name}' : 'exit_if_not_ok' defaults to false since catch_exception=true".format(
+            name=task_data['name']
+        ))
+        return False
+
+    if 'abort_on_failure' in task_data.keys():
+        logging.info(
+            "Task '{name}' : 'abort_on_failure' has been renamed to 'exit_if_not_ok', "
+            "please update your batch".format(
+                name=task_data['name']
+        ))
+        return task_data['abort_on_failure']
+
+    return task_data.get('exit_if_not_ok', True)
+
+
+def _when(task_data):
+    return str(task_data.get('when', True))
 
 
 def _prepare_task_data(task_data):
@@ -25,9 +52,10 @@ def _prepare_task_data(task_data):
         'name': task_data['name'],
         'command': command_name,
         'arguments': task_data[command_name],
-        'ignore_errors': _ignore_errors(task_data),
+        'catch_exception': _catch_exception(task_data),
         'register_status': _register_status(task_data),
-        'abort_on_failure': _abort_on_failure(task_data)
+        'exit_if_not_ok': _exit_if_not_ok(task_data),
+        'when': _when(task_data)
     }
 
     return splitted
@@ -64,9 +92,10 @@ def normalize_task(task_data):
         command_name=task_data['command'],
         arguments=task_data['arguments']
     )
-    task.ignore_errors = task_data['ignore_errors']
+    task.catch_exception = task_data['catch_exception']
     task.register_status = task_data['register_status']
-    task.abort_on_failure = task_data['abort_on_failure']
+    task.exit_if_not_ok = task_data['exit_if_not_ok']
+    task.when = task_data['when']
 
     return task
 
@@ -76,7 +105,7 @@ def normalize(data):
     tasks = list()
     status = OK
 
-    tasks += normalize_environment(data.get('environment', list()))
+    tasks += normalize_environment(data.get('environment', dict()))
     tasks += [normalize_task(task) for task in data['tasks']]
 
     return tags, tasks, status

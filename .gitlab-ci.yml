@@ -1,0 +1,17 @@
+stages:
+  - test
+  - docgen
+
+tests:
+  stage: test
+  tags: [docker]
+  script:
+    - pip install -q -r requirements.txt
+    - export PYTHONPATH=/usr/local/lib/python2.7/site-packages
+    - py.test --cov-report term-missing --color=yes --cov=$CI_PROJECT_NAME
+
+docgen:
+  stage: docgen
+  tags: [docgenyco]
+  script:
+    - python -m docgenyco $CI_REPOSITORY_URL /home/documentation/production/devdoc/ "Developper documentation"

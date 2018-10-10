@@ -23,6 +23,9 @@ def apply_(name, state):
         name=name
     )
 
-    call(command, shell=True)
+    exit_code = call(command, shell=True)
 
-    return OK
+    if exit_code == 0:
+        return OK
+
+    return exit_code

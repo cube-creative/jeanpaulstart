@@ -1,5 +1,9 @@
 import os
+import re
 import platform
+
+
+_REGEX = re.compile(r"\$[^\"\\' +!=.]+")
 
 
 def get(name):
@@ -14,6 +18,16 @@ def set(name, value):
             value = ':'.join(value)
 
     os.environ[name] = os.path.expandvars(str(value))
+
+
+def parse_expression(expression):
+    parsed = expression
+
+    for match in _REGEX.findall(expression):
+        value = os.environ.get(match[1:], match)
+        parsed = parsed.replace(match, "'{}'".format(value))
+
+    return parsed
 
 
 def parse(value):

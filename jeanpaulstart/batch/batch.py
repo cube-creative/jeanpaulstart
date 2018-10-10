@@ -1,6 +1,7 @@
 import logging
 from jeanpaulstart import parser
 from jeanpaulstart.constants import *
+from jeanpaulstart.environment import parse
 from validator import validate
 from normalizer import normalize
 
@@ -28,10 +29,19 @@ class Batch(object):
             self._data = parser.from_file(filepath)
 
         self.load_status = BATCH_NOT_LOADED
+        self.icon_path = ""
         self.tags = list()
         self.tasks = list()
 
         self._load()
+
+    def __repr__(self):
+        return "Batch(name='{name}', tags={tags}, load_status={status}, tasks={tasks_count})".format(
+            name=self.name,
+            tags=self.tags,
+            status=self.load_status,
+            tasks_count=len(self.tasks)
+        )
 
     def _load(self):
         """
@@ -52,6 +62,7 @@ class Batch(object):
             return
 
         self.name = self._data['name']
+        self.icon_path = parse(self._data['icon_path'])
         tags, tasks, status = normalize(self._data)
 
         if status != OK:
