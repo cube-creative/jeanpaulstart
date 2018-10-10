@@ -19,7 +19,16 @@ def _apply_(task):
         arguments=' '.join(['{0}={1}'.format(key, value) for key, value in task.arguments.items()])
     )]
 
-    if task.ignore_errors:
+    when = (environment.parse_expression(task.when))
+    if not eval(when):
+        messages.append('[{task_name}][**SKIPPED**] when clause evaluated to False : {clause}'.format(
+            task_name=task.name,
+            clause=task.when
+        ))
+        status = TASK_WHEN_FALSE
+        return status, messages
+
+    if task.catch_exception:
         try:
             plugin.apply_(**arguments)
             status = OK
@@ -55,6 +64,12 @@ class Executor(object):
             logging.info('Given batch is not loaded : ' + self.batch.load_status)
             self.status = BATCH_NOT_LOADED
 
+    def __repr__(self):
+        return "Executor(batch={batch}, status={status})".format(
+            batch=self.batch,
+            status=self.status
+        )
+
     def _step_messages(self):
         self._message_index = len(self._messages)
 
@@ -62,34 +77,48 @@ class Executor(object):
         [logging.info(message) for message in messages]
         self._messages += messages
 
+    @property
     def progress(self):
         """
-        Returns the progress of execution as a float [0..1]
+        Property that returns the progress of execution as a float [0..1]
         :return: float
         """
         return float(self._task_index) / len(self.batch.tasks)
 
+    @property
+    def messages(self):
+        """
+        Property that return all the messages the tasks generated during execution
+        :return: a list of string
+        """
+        return self._messages
+
+    @property
     def last_messages(self):
         """
-        Returns the list of last added messages (i.e for the latest task applied)
+        Property that returns the list of last added messages (i.e for the latest task applied)
         :return: a list of messages
         """
         return self._messages[self._message_index:]
 
     def reset(self):
         """
-        Resets execution infos (status, messages, current task, ignored errors, registered status, environment backup)
+        Resets execution infos (status, messages, current task, ignored errors,
+        registered status, environment backup)
         :return:
         """
         self._messages = list()
         self._task_index = 0
         self._ignored_errors = 0
-        self._registered_status = EXEC_IDLE
+        self._registered_status = OK
         self._environment_backup = dict()
+        os.environ[EXEC_REGISTERED_STATUS_ENV_VAR] = str(OK)
 
+    @property
     def next_task(self):
         """
-        Returns the next task that will be applied (useful for displaying Ui messages before execution)
+        Property that returns the next task that will be applied
+        (useful for displaying Ui messages before execution)
         :return: The next task, None if execution finished of Batch not OK
         """
         if self._task_index >= len(self.batch.tasks):
@@ -127,7 +156,11 @@ class Executor(object):
         self._backup_environment()
 
     def _finish(self):
-        self._post_messages(['[{}] Finished'.format(self.batch.name)])
+        self._post_messages(['[{name}] Finished (tasks={tasks}, errors_ignored={errors})'.format(
+            name=self.batch.name,
+            tasks=len(self.batch.tasks),
+            errors=self._ignored_errors
+        )])
         self.status = EXEC_FINISHED
         self._restore_environment()
 
@@ -150,7 +183,7 @@ class Executor(object):
         if self.status == EXEC_IDLE:
             self._begin()
 
-        if self.status in (EXEC_FINISHED, EXEC_ABORTED, EXEC_BEGIN_FAILED):
+        if self.has_stopped:
             return self.status
 
         current_task = self.batch.tasks[self._task_index]
@@ -162,23 +195,33 @@ class Executor(object):
         if status == TASK_ERROR_IGNORED:
             self._ignored_errors += 1
 
-        if current_task.register_status:
+        if current_task.register_status and status != TASK_WHEN_FALSE:
             self._registered_status = status
+            os.environ[EXEC_REGISTERED_STATUS_ENV_VAR] = str(status)
 
-        if current_task.abort_on_failure and status != OK:
-            self._abort(current_task.name, 'Status was not OK, abort on failure is ON')
+        if current_task.exit_if_not_ok and status not in (OK, TASK_WHEN_FALSE):
+            self._abort(current_task.name, 'Status was not OK and exit_if_not_ok=true')
 
         if self._task_index >= len(self.batch.tasks):
             self._finish()
 
-        return status, self.last_messages()
+        return status, self.last_messages
 
+    @property
     def has_stopped(self):
         """
-        Helper method to check execution was aborted or finished
+        Helper property to check execution was aborted or finished
         :return:  True or False
         """
         return self.status in (EXEC_FINISHED, EXEC_ABORTED, EXEC_BEGIN_FAILED, BATCH_NOT_LOADED)
+
+    @property
+    def success(self):
+        """
+        Helper property to check if execution went well
+        :return: True or False
+        """
+        return self.status == EXEC_FINISHED
 
     def run_all(self):
         """
@@ -187,17 +230,22 @@ class Executor(object):
         """
         self.reset()
 
-        while not self.has_stopped():
+        while not self.has_stopped:
             self.step()
 
-        return self._registered_status, self._messages
+        return self._registered_status, self._messages, self.status
 
 
 def run_batch(batch):
     """
     Runs the given batch
     :param batch: a valid and normalized batch
-    :return: registered status, list of messages
+    :return: registered status, list of messages, executor status
     """
     executor = Executor(batch)
-    return executor.run_all()
+    registered_status, messages, executor_status = executor.run_all()
+
+    if executor.success:
+        return registered_status
+
+    return executor_status

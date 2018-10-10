@@ -18,7 +18,7 @@ def process_args():
 
 if __name__ == '__main__':
     log = logging.getLogger()
-    log.setLevel(logging.DEBUG)
+    log.setLevel(logging.INFO)
 
     args = process_args()
     jeanpaulstart.load_plugins()

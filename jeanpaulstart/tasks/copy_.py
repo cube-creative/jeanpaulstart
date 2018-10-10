@@ -15,7 +15,6 @@ def normalize_after_split(splitted):
 
 
 def apply_(src, dest, force):
-    if file_io.copy(src, dest, force) is None:
-        return STATE_ALREADY_EXISTS
+    file_io.copy(src, dest, force)
 
     return OK

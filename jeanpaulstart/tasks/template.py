@@ -29,7 +29,7 @@ def normalize_after_split(splitted):
 
 def apply_(src, dest, force):
     if not force and os.path.isfile(dest):
-        return STATE_ALREADY_EXISTS
+        return OK
 
     dirname = os.path.dirname(dest)
     if not os.path.isdir(dirname): os.makedirs(dirname)

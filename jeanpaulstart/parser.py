@@ -133,33 +133,35 @@ def from_file(filepath):
 
 def from_folder(folder):
     """
-    Parses all the files in the given folder
+    Lists all the .json / .yml files in a given folder
     :param folder:
-    :return: a list of parsed data
+    :return: a list filepathes
     """
-    data = list()
+    filepathes = list()
 
     if not os.path.exists(folder):
-        return data
+        return filepathes
 
     for filename in sorted(os.listdir(folder)):
         filepath = os.path.join(folder, filename).replace('\\', '/')
-        file_data = from_file(filepath)
-        if file_data:
-            data.append((filepath, file_data))
 
-    return data
+        if not filepath.endswith(('.json', '.yml')): continue
+        if not os.path.exists(filepath): continue
+
+        filepathes.append(filepath)
+
+    return filepathes
 
 
 def from_folders(folders):
     """
-    Parses all the files in all the given folders
+    Lists all the .json / .yml files in all the given folders
     :param folders:
-    :return: a list of parsed data
+    :return: a list filepathes
     """
-    data = list()
+    filepathes = list()
 
     for folder in folders:
-        data += from_folder(folder)
+        filepathes += from_folder(folder)
 
-    return data
+    return filepathes

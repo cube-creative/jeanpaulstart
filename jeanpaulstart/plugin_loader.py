@@ -14,6 +14,9 @@ class Loader(object):
     def __init__(self, plugin_folder):
          self.plugin_folder = plugin_folder
 
+    def __repr__(self):
+        return "Loader(folder={folder})".format(folder=self.plugin_folder)
+
     def list_names(self):
         search_path = os.path.join(self.plugin_folder, "*.py")
         files = glob(search_path)

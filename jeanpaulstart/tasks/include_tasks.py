@@ -14,9 +14,4 @@ def normalize_after_split(splitted):
 
 
 def apply_(file):
-    status = jeanpaulstart.run_from_filepath(file)
-
-    if status is None:
-        return 1
-
-    return status
+    return jeanpaulstart.run_from_filepath(file)

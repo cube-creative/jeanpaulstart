@@ -18,3 +18,4 @@ def apply_(path, state):
         file_io.mkdir(path)
     elif state == STATE_ABSENT:
         file_io.remove(path)
+    return OK

@@ -4,6 +4,6 @@ __pycache__/
 
 /.idea
 .coverage
-
+.pytest_cache
 
 Thumbs.db

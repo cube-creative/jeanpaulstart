@@ -42,6 +42,7 @@ class _IniConfigParser(ConfigParser):
                 self.remove_option(section, option)
             else:
                 self.remove_section(section)
+
         elif state == STATE_PRESENT:
             if not self.has_section(section):
                 self.add_section(section)
