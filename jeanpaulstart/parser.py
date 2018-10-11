@@ -45,6 +45,10 @@ class _OrderedDictYAMLLoader(yaml.Loader):
         return mapping
 
 
+def _norm_slashes(path):
+    return path.replace('\\', os.sep).replace('/', os.sep)
+
+
 def _str_ordered_dict(pairs):
     return OrderedDict(
         [(_str_hook(key, ignore_dicts=True), _str_hook(value, ignore_dicts=True)) for key, value in pairs]
@@ -119,7 +123,7 @@ def from_file(filepath):
     :param filepath:
     :return: None if file not parsed or doesn't exist or not .json / .yml
     """
-    filepath = filepath.replace('/', '\\')
+    filepath = _norm_slashes(filepath)
 
     if not os.path.isfile(filepath):
         return None
@@ -143,7 +147,7 @@ def from_folder(folder):
         return filepathes
 
     for filename in sorted(os.listdir(folder)):
-        filepath = os.path.join(folder, filename).replace('\\', '/')
+        filepath = _norm_slashes(os.path.join(folder, filename))
 
         if not filepath.endswith(('.json', '.yml')): continue
         if not os.path.exists(filepath): continue

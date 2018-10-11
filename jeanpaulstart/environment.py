@@ -27,7 +27,7 @@ def parse_expression(expression):
         value = os.environ.get(match[1:], match)
         parsed = parsed.replace(match, "'{}'".format(value))
 
-    return parsed
+    return os.path.expanduser(parsed)
 
 
 def parse(value):
@@ -38,9 +38,9 @@ def parse(value):
         return _parse_from_dict(value)
 
     if platform.system() == 'Windows':
-        return os.path.expandvars(str(value).replace('%', '%%'))
+        return os.path.expanduser(os.path.expandvars(str(value).replace('%', '%%')))
 
-    return os.path.expandvars(str(value))
+    return os.path.expanduser(os.path.expandvars(str(value)))
 
 
 def _parse_from_dict(dict_):
