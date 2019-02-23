@@ -47,6 +47,8 @@ def _parse_from_dict(dict_):
     parsed_dict = dict()
     for key, value in dict_.items():
         key = parse(key)
+        if key == 'async':
+            key = 'async_on'
 
         if isinstance(value, list):
             parsed_dict[key] = [parse(item) for item in value]

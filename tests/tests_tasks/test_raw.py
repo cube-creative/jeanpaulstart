@@ -58,7 +58,7 @@ class TestTaskRaw(unittest.TestCase):
 
     def test_normalize_without_async(self):
         expected = deepcopy(SPLITTED)
-        expected['arguments']['async'] = True
+        expected['arguments']['async_on'] = True
         expected['arguments']['open_terminal'] = False
 
         normalized = raw.normalize_after_split(deepcopy(SPLITTED))
@@ -69,7 +69,7 @@ class TestTaskRaw(unittest.TestCase):
         )
 
     def test_apply_not_async(self):
-        raw.apply_(async=False, command="command", open_terminal=False)
+        raw.apply_(async_on=False, command="command", open_terminal=False)
 
         self.assertEqual(
             self._mock_call_called,
@@ -80,7 +80,7 @@ class TestTaskRaw(unittest.TestCase):
         self.assertIsNone(self._mock_system_called)
 
     def test_apply_async_no_terminal(self):
-        raw.apply_(async=True, command="command", open_terminal=False)
+        raw.apply_(async_on=True, command="command", open_terminal=False)
 
         self.assertEqual(
             self._mock_popen_called,
@@ -91,7 +91,7 @@ class TestTaskRaw(unittest.TestCase):
         self.assertIsNone(self._mock_system_called)
 
     def test_apply_async_open_terminal(self):
-        raw.apply_(async=True, command="command", open_terminal=True)
+        raw.apply_(async_on=True, command="command", open_terminal=True)
 
         self.assertEqual(
             self._mock_system_called,

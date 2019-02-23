@@ -1,5 +1,6 @@
 from .constants import *
-import batch as _batch
+from . import batch as _batch
+#import batch as _batch
 from .executor import Executor, run_batch
 from . import plugin_loader as _plugin_loader
 

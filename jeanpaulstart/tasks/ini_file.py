@@ -1,6 +1,9 @@
 import shutil
-from StringIO import StringIO
-from ConfigParser import ConfigParser, MissingSectionHeaderError
+try:
+    from StringIO import StringIO
+except ImportError:
+    from io import StringIO
+from configparser import ConfigParser, MissingSectionHeaderError
 from jeanpaulstart import file_io
 from jeanpaulstart.constants import *
 

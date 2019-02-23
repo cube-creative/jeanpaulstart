@@ -1,4 +1,4 @@
-from batch import Batch
+from .batch import Batch
 from jeanpaulstart import tags
 from jeanpaulstart import parser
 from jeanpaulstart.constants import *
