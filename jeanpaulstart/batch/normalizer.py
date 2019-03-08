@@ -1,5 +1,5 @@
 import logging
-from task import Task
+from .task import Task
 from jeanpaulstart.constants import *
 from jeanpaulstart import plugin_loader
 
@@ -46,7 +46,7 @@ def _when(task_data):
 
 
 def _prepare_task_data(task_data):
-    command_name = task_data.keys()[1]
+    command_name = list(task_data.keys())[1]
 
     splitted = {
         'name': task_data['name'],

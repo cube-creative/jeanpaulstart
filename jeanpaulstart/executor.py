@@ -1,8 +1,8 @@
 import os
 import logging
-import environment
-import plugin_loader
-from constants import *
+from . import environment
+from . import plugin_loader
+from .constants import *
 
 
 def _apply_(task):

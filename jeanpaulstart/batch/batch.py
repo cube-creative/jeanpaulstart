@@ -2,8 +2,8 @@ import logging
 from jeanpaulstart import parser
 from jeanpaulstart.constants import *
 from jeanpaulstart.environment import parse
-from validator import validate
-from normalizer import normalize
+from .validator import validate
+from .normalizer import normalize
 
 
 class Batch(object):

@@ -1,15 +1,19 @@
 # Jean Paul Start
 
-L'enfer, c'est les .bats
+![](jeanpaulstartui.jpg)
 
-_Jean-Paul Start is verbose about plugin loading, batch loading and parsing, task execution, ..._
+_Hell is the .bats_
 
-_Be sure to set your logging level to `INFO` if needed_ 
+- Jean-Paul Start is verbose about plugin loading, batch loading and parsing, task execution, ...
+
+- Be sure to set your logging level to `INFO` if needed
+
+*Read this in other languages: [Français](README.fr-FR.md) (by sayanel@github).*
 
 ## Installation
 
 ````bash
-pip install git+https://github.com/cube-creative/jeanpaulstart.git
+pip install git+https://github.com/Arubinu/jeanpaulstart.git
 ````
 
 ## Usage as a CLI
