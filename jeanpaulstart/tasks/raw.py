@@ -12,7 +12,7 @@ def validate(user_data):
 
 def normalize_after_split(splitted):
     normalized = dict(splitted)
-    normalized['arguments']['async_'] = splitted['arguments'].get('async_', True)
+    normalized['arguments']['async_'] = splitted['arguments'].get('async', True)
     normalized['arguments']['open_terminal'] = splitted['arguments'].get('open_terminal', False)
     return normalized
 

@@ -1,5 +1,6 @@
 import os
 import logging
+import collections
 from . import environment
 from . import plugin_loader
 from .constants import *
@@ -13,6 +14,10 @@ def _apply_(task):
     """
     arguments = environment.parse(task.arguments)
     plugin = plugin_loader.loaded_plugins.get(task.command_name, None)
+    if 'async_' in task.arguments:
+        value = task.arguments.__getitem__('async_')
+        task.arguments.__setitem__('async', value)
+        task.arguments.__delitem__('async_')
     messages = ["[{task_name}] '{command_name}' with argument(s) {arguments}".format(
         task_name=task.name,
         command_name=task.command_name,
