@@ -34,6 +34,7 @@ def _load_user_tags_dict(tags_content):
     user_tags_dict = dict()
     for tag, user_list in tags_content.items():
         for user in user_list:
+            user = user.lower()
             if user not in user_tags_dict.keys():
                 user_tags_dict[user] = list()
 
@@ -56,6 +57,7 @@ def get_tags_by_user(user_tags, username, include_common=True):
     if include_common:
         tags_list.append(TAG_COMMON)
 
+    username = username.lower()
     if not user_tags or username not in user_tags.keys():
         return tags_list
 
