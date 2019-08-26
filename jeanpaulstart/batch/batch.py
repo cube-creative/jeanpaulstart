@@ -57,7 +57,7 @@ class Batch(object):
         status, message = validate(self._data)
 
         if status != OK:
-            logging.info('Validation failed : ' + message)
+            logging.info('Validation failed : %s', message if message else status)
             self.load_status = BATCH_NOT_VALID
             return
 

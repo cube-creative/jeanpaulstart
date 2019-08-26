@@ -17,7 +17,6 @@ def normalize_after_split(splitted):
 
 
 def apply_(name, state):
-
     command = "pip3 install {state}{name}".format(
         state='--upgrade ' if state == STATE_FORCE_REINSTALL else '',
         name=name
