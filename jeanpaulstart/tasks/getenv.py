@@ -20,6 +20,12 @@ def apply_(file):
         for line in f.readlines():
             line = line.strip().decode( 'utf-8' )
             key, value = line.split( '=', 1 )
-            environment.set( key.strip(), value.strip() )
-            logging.info( '[From %s] %s=%s', TASK_COMMAND, key.strip(), value.strip() )
+
+            key = key.strip()
+            value = value.strip()
+            if not len( key ) or key[ 0 ] == '=':
+                continue
+
+            environment.set( key, value )
+            logging.info( '[From %s] %s=%s', TASK_COMMAND, key, value )
     return OK

@@ -15,7 +15,7 @@ def load_plugins():
     _plugin_loader.init(force=True)
 
 
-def run_from_filepath(filepath):
+def run_from_filepath(filepath, preserve_env=False):
     """
     Runs batch from  a given filepath (json or yaml)
     :param filepath: String
@@ -26,7 +26,7 @@ def run_from_filepath(filepath):
     if batch.load_status != OK:
         return batch.load_status
 
-    return run_batch(batch)
+    return run_batch(batch, preserve_env)
 
 
 def executor_from_filepath(filepath):

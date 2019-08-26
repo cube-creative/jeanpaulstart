@@ -10,8 +10,10 @@ def validate(user_data):
 
 
 def normalize_after_split(splitted):
-    return splitted
+    normalized = dict(splitted)
+    normalized['arguments']['preserve_env'] = splitted['arguments'].get('preserve_env', False)
+    return normalized
 
 
-def apply_(file):
-    return jeanpaulstart.run_from_filepath(file)
+def apply_(file, preserve_env):
+    return jeanpaulstart.run_from_filepath(file, preserve_env)

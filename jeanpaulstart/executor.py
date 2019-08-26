@@ -55,8 +55,9 @@ class Executor(object):
     """
     Run batches tasks, set by step or as a whole
     """
-    def __init__(self, batch):
+    def __init__(self, batch, include=False):
         self.batch = batch
+        self.include = include
         self.status = EXEC_IDLE
         self._messages = list()
         self._message_index = 0
@@ -167,7 +168,8 @@ class Executor(object):
             errors=self._ignored_errors
         )])
         self.status = EXEC_FINISHED
-        self._restore_environment()
+        if not self.include:
+            self._restore_environment()
 
     def _abort(self, step_name, reason):
         self._post_messages(['[{batch_name}][{step_name}][**ABORT**] {reason}'.format(
@@ -176,7 +178,8 @@ class Executor(object):
             reason=reason
         )])
         self.status = EXEC_ABORTED
-        self._restore_environment()
+        if not self.include:
+            self._restore_environment()
 
     def step(self):
         """
@@ -241,13 +244,13 @@ class Executor(object):
         return self._registered_status, self._messages, self.status
 
 
-def run_batch(batch):
+def run_batch(batch, include=False):
     """
     Runs the given batch
     :param batch: a valid and normalized batch
     :return: registered status, list of messages, executor status
     """
-    executor = Executor(batch)
+    executor = Executor(batch, include)
     registered_status, messages, executor_status = executor.run_all()
 
     if executor.success:
