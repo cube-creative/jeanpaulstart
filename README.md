@@ -13,7 +13,7 @@ _Hell is the .bats_
 ## Installation
 
 ````bash
-pip install git+https://github.com/Arubinu/jeanpaulstart.git
+pip install git+https://github.com/cube-creative/jeanpaulstart.git
 ````
 
 ## Usage as a CLI
