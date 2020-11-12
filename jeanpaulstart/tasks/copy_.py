@@ -11,10 +11,11 @@ def validate(user_data):
 
 def normalize_after_split(splitted):
     splitted['arguments']['force'] = splitted['arguments'].get('force', True)
+    splitted['arguments']['replace'] = splitted['arguments'].get('replace', False)
     return splitted
 
 
-def apply_(src, dest, force):
-    file_io.copy(src, dest, force)
+def apply_(src, dest, force, replace):
+    file_io.copy(src, dest, force, replace)
 
     return OK

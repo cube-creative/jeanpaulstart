@@ -118,16 +118,24 @@ Ces modules sont listés au démarrage de Jean-Paul Start, s'ils répondent aux 
 
 ### Copy
 
-Permet de copier un fichier
+Permet de copier un fichier ou un dossier
 
-Si la destination existe, et `force: no`, aucune action n'est effectuée
+Si le chemin est un dossier, il est copié recursivement. Dans ce cas, si le chemin se termine par "/", seul le contenu de ce dossier sera copié vers la destination.
+
+Si la source est un dossier, la destination doit etre un dossier aussi.
+
+Si la destination existe, et `force: no`, aucune action n'est effectuée.
+
+- `force` est facultatif, sa valeur par défaut est `yes`
+- `replace` est facultatif, sa valeur par défaut est `no`
 
 ````yaml
 - name: Name of task
   copy:
-    src: /path/to/source.ext
-    dest: /path/to/destination.ext
+    src: /path/to/source
+    dest: /path/to/destination
     force: [yes|no]
+    replace: [yes|no]
 ```` 
 
 ### File

@@ -131,16 +131,24 @@ Tasks are written as plugins, in the package `jeanpaulstart.tasks`, they must co
 
 ### Copy
 
-Copies a file
+Copies a file or a directory
 
-If destination exists and `force: no`, nothing will happen
+If path is a directory, it is copied recursively. In this case, if path ends with "/", only inside contents of that directory are copied to destination. 
+
+If the source is a directory, the destination must be a directory too.
+
+If destination exists and `force: no`, nothing will happen.
+
+- `force` is not mandatory, defaults to `yes`
+- `replace` is not mandatory, defaults to `no`
 
 ````yaml
 - name: Name of task
   copy:
-    src: /path/to/source.ext
-    dest: /path/to/destination.ext
+    src: /path/to/source
+    dest: /path/to/destination
     force: [yes|no]
+    replace: [yes|no]
 ```` 
 
 ### File
