@@ -3,7 +3,7 @@ import imp
 import logging
 from glob import glob
 from collections import OrderedDict
-from constants import *
+from .constants import *
 
 
 loaded_plugins = OrderedDict()
@@ -79,7 +79,7 @@ class Loader(object):
             status = self.validate(plugin)
 
             if status is not OK:
-                logging.warn("Could not validate plugin : '{plugin_name}.py' ({status})".format(
+                logging.warning("Could not validate plugin : '{plugin_name}.py' ({status})".format(
                     plugin_name=plugin_name,
                     status=status
                 ))
@@ -88,7 +88,7 @@ class Loader(object):
             command_name = plugin.TASK_COMMAND
 
             if command_name in plugins.keys():
-                logging.warn("Skipping plugin '{plugin_name}.py' : command '{command_name}' already loaded".format(
+                logging.warning("Skipping plugin '{plugin_name}.py' : command '{command_name}' already loaded".format(
                     plugin_name=plugin_name,
                     command_name=command_name
                 ))
@@ -108,7 +108,7 @@ def init(plugin_folder=None, force=False):
         plugin_folder = os.path.expandvars('$PLUGIN_FOLDER')
 
     if plugin_folder == "$PLUGIN_FOLDER":
-        import tasks
+        from . import tasks
         plugin_folder=os.path.dirname(tasks.__file__)
 
     if loaded_plugins and not force:

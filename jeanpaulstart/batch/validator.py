@@ -33,7 +33,7 @@ def _validate_tags(data):
 
 
 def _validate_task(task_data):
-    command_name = task_data.keys()[1]
+    command_name = list(task_data.keys())[1]
     task_plugin = plugin_loader.loaded_plugins.get(command_name, None)
 
     if not task_plugin:

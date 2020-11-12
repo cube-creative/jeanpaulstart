@@ -1,10 +1,20 @@
 # Jean Paul Start
 
-L'enfer, c'est les .bats
+![](jeanpaulstartui.jpg)
 
-_Jean-Paul Start is verbose about plugin loading, batch loading and parsing, task execution, ..._
+_Hell is the .bats_
 
-_Be sure to set your logging level to `INFO` if needed_ 
+- Jean-Paul Start is verbose about plugin loading, batch loading and parsing, task execution, ...
+
+- Be sure to set your logging level to `INFO` if needed
+
+*Read this in other languages: [Français](README.fr-FR.md) (by sayanel@github).*
+
+## Installation
+
+````bash
+pip install git+https://github.com/Arubinu/jeanpaulstart.git
+````
 
 ## Usage as a CLI
 
@@ -207,7 +217,7 @@ Parameter `state` is not mandatory, defaults to `present`
 Run a command in the terminal
 
 Parameter `async` spawns a new process (`Popen()`)
-Parameter `open_terminal` opns a new terminal window
+Parameter `open_terminal` opens a new terminal window
 
 `async` defaults to `True`
 `open_terminal` defaults to `False`
@@ -220,8 +230,8 @@ If `async: yes`, `jeanpaulstart.OK` is immediately returned
 - name: Launch djv_view
   raw: 
     command: "\"C:\\Program Files\\djv-1.1.0-Windows-64\\bin\\djv_view.exe\""
-    async:[yes|no]
-    open_terminal:[yes|no]
+    async: [yes|no]
+    open_terminal: [yes|no]
 ````
 
 ### Template
