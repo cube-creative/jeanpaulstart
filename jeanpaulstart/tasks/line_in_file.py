@@ -14,7 +14,6 @@ def normalize_after_split(splitted):
 
 
 def apply_(filepath, value, insert_after, replace):
-    print(filepath, value, insert_after, replace)
     insert_line(filepath, value, insert_after, replace)
 
     return OK
