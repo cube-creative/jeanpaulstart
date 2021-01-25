@@ -24,17 +24,20 @@ def insert_line(filepath, value, insert_after, replace):
     with open(filepath) as f:
         content = f.readlines()
 
-    row = 0
     if insert_after:
+        row = None
         for index, line in enumerate(content):
-            if line.strip() == insert_after:
+            if line == insert_after + '\n':
                 row = index + 1
                 break
+    else:
+        row = 0
 
     if content[row] == value and not replace:
         return
 
-    content.insert(row, value)
+    if row is not None:
+        content.insert(row, value)
 
     with open(filepath, 'w') as f:
         for line in content:
