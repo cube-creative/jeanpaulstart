@@ -17,7 +17,7 @@ def copy(source, destination, force=True, replace=False):
     if not force and os.path.exists(destination):
         return
 
-    # If source is a directory, this must be a directory too and
+    # If source is a directory, the destination must be a directory too and
     # if the destination exists, is a file, an exception is raised.
     if os.path.isdir(source) and os.path.isfile(destination):
         raise ValueError('The destination must be a directory')
@@ -44,10 +44,7 @@ def copy(source, destination, force=True, replace=False):
         if replace:
             shutil.rmtree(destination)
 
-        distutils.dir_util.copy_tree(source, destination)
-        # shutil.copytree(source, destination, dirs_exist_ok=True)
-        # dirs_exist_ok only introduced in 3.8
-
+        shutil.copytree(source, destination, dirs_exist_ok=True)
     else:
         shutil.copy(source, destination)
 
