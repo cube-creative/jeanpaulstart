@@ -5,6 +5,7 @@ from jeanpaulstart.constants import *
 TASK_COMMAND = 'git'
 DEFAULT_BRANCH = 'master'
 
+
 def validate(user_data):
     return OK, ""
 
@@ -27,6 +28,6 @@ def checkout_remote(url, dest, branch):
         repo = git.Repo(dest)
 
     repo.git.reset("--hard")
-    repo.git.clean("-df")
+    repo.git.clean("-dfx")
     repo.git.pull("origin", branch)
     repo.git.checkout(branch)
