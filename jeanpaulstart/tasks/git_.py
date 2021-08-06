@@ -27,7 +27,8 @@ def checkout_remote(url, dest, branch):
     else:
         repo = git.Repo(dest)
 
-    repo.git.reset("--hard")
+    repo.git.reset("--hard", "origin/{}".format(branch))
     repo.git.clean("-dfx")
-    repo.git.pull("origin", branch)
-    repo.git.checkout(branch)
+    repo.git.fetch("--all")
+    repo.git.pull("origin", branch, "--tags", "--no-edit")
+    repo.git.checkout("-B", branch, "origin/{}".format(branch))
