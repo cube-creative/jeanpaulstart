@@ -22,6 +22,10 @@ def apply_(url, dest, branch):
 
 
 def checkout_remote(url, dest, branch):
+    parent = os.path.abspath(os.path.join(dest, os.pardir))
+    if not os.path.exists(parent):
+        os.makedirs(parent)
+
     if not os.path.exists(dest):
         repo = git.Repo.clone_from(url, dest)
     else:
