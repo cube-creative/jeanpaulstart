@@ -1,5 +1,6 @@
 import git
 import os
+from string import Template
 from jeanpaulstart.constants import *
 
 TASK_COMMAND = 'git'
@@ -22,6 +23,7 @@ def apply_(url, dest, branch):
 
 
 def checkout_remote(url, dest, branch):
+    dest = Template(dest).substitute(os.environ)
     parent = os.path.abspath(os.path.join(dest, os.pardir))
     if not os.path.exists(parent):
         os.makedirs(parent)
